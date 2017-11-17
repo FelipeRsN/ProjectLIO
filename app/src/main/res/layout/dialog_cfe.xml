@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Documento"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deseja digitar um CPF ou um CNPJ para a CF-e?"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/cpf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="CPF"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:gravity="right|center_vertical"
+        android:layout_gravity="right"
+        android:layout_marginTop="8dp"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    <Button
+        android:id="@+id/cnpj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="CNPJ"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="right"
+        android:gravity="right|center_vertical"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/nenhum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="Nenhum"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+        <Button
+            android:id="@+id/voltar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="voltar"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toStartOf="@id/OK"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_dialogop_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Código do operador:"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/et_dialogop_codigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_dialogop_login"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:maxLength="5"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/tv_dialogop_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Senha de acesso:"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/et_dialogop_codigo"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/et_dialogop_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_dialogop_senha"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:maxLength="20"
+        android:inputType="numberPassword"/>
+
+    <Button
+        android:id="@+id/bt_dialogop_enviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entrar"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="right|center_vertical"
+        android:layout_below="@id/et_dialogop_senha"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <Button
+        android:id="@+id/bt_dialogop_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorPrimary"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:layout_marginRight="10dp"
+        android:gravity="right|center_vertical"
+        android:layout_toLeftOf="@+id/bt_dialogop_enviar"
+        android:layout_below="@id/et_dialogop_senha"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</RelativeLayout>

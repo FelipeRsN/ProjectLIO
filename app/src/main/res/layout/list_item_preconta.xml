@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="4"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textSize="14sp"
+        android:layout_weight="2"
+        android:textColor="@color/colorBlack"
+        android:paddingEnd="8dp"
+        android:gravity="left|center_vertical"
+        android:text="NOME DO PRODUTO ahsdj ashud iahsia jk hkjh s dhkj sdfsjldjskljk"
+        android:maxLines="2"/>
+
+    <TextView
+        android:id="@+id/qtd"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:text="12UN"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:paddingStart="16dp"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/colorBlack"/>
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_weight="1"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/colorBlack"
+        android:text="R$ 999,99"/>
+
+
+</LinearLayout>
+

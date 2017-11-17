@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MinhaContaActivity">
+
+    <RelativeLayout
+        android:id="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/tv_conta_comanda"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="Conferência de mesas"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
+
+        <ImageButton
+            android:id="@+id/ib_conta_return"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/arrow_left_48"
+            style="?android:attr/borderlessButtonStyle"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tb_main">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_conta_tot"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <TableLayout
+                android:id="@+id/tl_conferencia"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--<TableRow-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:layout_weight="5">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Produto"-->
+                        <!--android:textColor="@color/colorWhite"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="16sp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_weight="3"-->
+                        <!--android:layout_margin="2dp"-->
+                        <!--android:background="@drawable/border_radius"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Qtd"-->
+
+                        <!--android:textColor="@color/colorWhite"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="16sp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_margin="2dp"-->
+                        <!--android:background="@drawable/border_radius"/>-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Total"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@color/colorWhite"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:textSize="16sp"-->
+                        <!--android:layout_margin="2dp"-->
+                        <!--android:background="@drawable/border_radius"/>-->
+
+                <!--</TableRow>-->
+
+            </TableLayout>
+
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/pb_minhaconta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tv_minhaconta_aviso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:text="Nenhum produto encontrado"/>
+
+    </RelativeLayout>
+</RelativeLayout>

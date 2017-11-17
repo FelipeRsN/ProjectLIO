@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="6dp">
+
+        <TextView
+            android:id="@+id/tv_main_comanda"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="COMANDA: 000001"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tv_main_nmesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="MESA: 000001"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginBottom="1dp"
+            android:visibility="invisible"/>
+
+        <ImageButton
+            android:id="@+id/ib_main_return"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/arrow_left_48"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <ImageButton
+            android:id="@+id/ib_main_carrinho"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/cart_outline"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_search"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_below="@id/tb_main"
+        android:background="@drawable/border_radius"
+        android:layout_margin="10dp"
+        android:elevation="4dp">
+
+        <EditText
+            android:id="@+id/et_main_descprod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:layout_toLeftOf="@+id/ib_main_search"
+            android:inputType="text"
+            android:hint="Pesquisar Produto"/>
+
+        <ImageButton
+            android:id="@+id/ib_main_search"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/magnify"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_search"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/rl_main_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@drawable/border_radius_2"
+            android:layout_margin="10dp"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/bt_main_atalhos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="#FFFFFF"
+                        android:text="Atalhos"
+                        android:textSize="20sp"
+                        android:textAllCaps="false"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                    <View
+                        android:id="@+id/view_main_atalhos"
+                        android:layout_below="@+id/bt_main_atalhos"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="-15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:visibility="invisible"
+                        android:background="#e0ffffff"/>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="#e0ffffff"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/ib_main_pad"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/dialpad_white"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                    <View
+                        android:id="@+id/view_main_pad"
+                        android:layout_below="@+id/ib_main_pad"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="-15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:background="#e0ffffff"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/bt_main_family"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="#FFFFFF"
+                        android:text="Famílias"
+                        android:textSize="20sp"
+                        android:textAllCaps="false"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                    <View
+                        android:id="@+id/view_main_family"
+                        android:layout_below="@+id/bt_main_family"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="-15dp"
+                        android:layout_marginLeft="15dp"
+                        android:visibility="invisible"
+                        android:layout_marginRight="15dp"
+                        android:background="#e0ffffff"/>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentLeft="true"
+                        android:background="#e0ffffff"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_main_atalho"
+            android:layout_below="@id/rl_main_tabs"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/tv_main_iatalho"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Atalhos"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"/>
+
+
+            <View
+                android:id="@+id/view_main_v2"
+                android:layout_below="@+id/tv_main_iatalho"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#e0035c8c"/>
+
+            <TextView
+                android:id="@+id/tv_main_statusatalho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/view_main_v2"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="5dp"
+                android:visibility="invisible"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textSize="15sp"
+                android:text="Nenhum atalho cadastrado."/>
+
+            <ProgressBar
+                android:id="@+id/pb_main_atalho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+            <ListView
+                android:id="@+id/lv_main_atalho"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/view_main_v2">
+
+            </ListView>
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_main_fam"
+            android:layout_below="@id/rl_main_tabs"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/tv_main_ifamily"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Famílias"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"/>
+
+            <ImageButton
+                android:id="@+id/ib_main_return_family"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/arrow_left_color"
+                android:visibility="invisible"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <View
+                android:id="@+id/view_main_v1"
+                android:layout_below="@+id/tv_main_ifamily"
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#e0035c8c"/>
+
+            <ProgressBar
+                android:id="@+id/pb_main_family"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"/>
+
+            <ListView
+                android:id="@+id/lv_main_family"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/view_main_v1">
+
+            </ListView>
+
+            <ListView
+                android:id="@+id/lv_main_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/view_main_v1"
+                android:visibility="invisible">
+
+            </ListView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_main_pad"
+            android:layout_below="@id/rl_main_tabs"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/rl_main_codeprod"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize">
+
+                <ImageView
+                    android:id="@+id/iv_main_scan"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:padding="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:src="@drawable/barcode_scan"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:id="@+id/tv_main_nprod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/iv_main_scan"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="Produto:"/>
+
+                <TextView
+                    android:id="@+id/tv_main_codigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:maxLength="14"
+                    android:layout_toRightOf="@+id/tv_main_nprod"
+                    android:layout_toLeftOf="@+id/ib_main_backspace"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <ImageButton
+                    android:id="@+id/ib_main_backspace"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/backspace_colored"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <View
+                    android:layout_below="@+id/tv_main_nprod"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_toLeftOf="@+id/ib_main_backspace"
+                    android:layout_marginTop="-15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/iv_main_scan"
+                    android:layout_marginRight="10dp"
+                    android:background="#e0035c8c"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="3"
+                android:layout_below="@id/rl_main_codeprod"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="4"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_1"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="1"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_4"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="4"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_7"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="7"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:visibility="invisible"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="4"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_2"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="2"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_5"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="5"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_8"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="8"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_0"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="0"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="4"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_3"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="3"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_6"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="6"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:id="@+id/bt_main_9"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:text="9"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="25sp"
+                            android:elevation="4dp"
+                            android:textStyle="bold"
+                            android:background="@drawable/button_confirm_state"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:id="@+id/ib_main_ok"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:background="@drawable/button_shape_primary_color"
+                            android:elevation="4dp"
+                            android:src="@drawable/check"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

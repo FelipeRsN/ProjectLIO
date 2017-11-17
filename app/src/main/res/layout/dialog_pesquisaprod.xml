@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/tv_dialogpesq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Produtos encontrados:"
+        android:gravity="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <View
+        android:id="@+id/view_dialogpesq_v1"
+        android:layout_below="@+id/tv_dialogpesq"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_toLeftOf="@+id/ib_main_backspace"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="#e0035c8c"/>
+
+    <ProgressBar
+        android:id="@+id/pb_dialogpesq_wait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <ListView
+        android:id="@+id/lv_dialogpesq_prod"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_below="@+id/view_dialogpesq_v1"
+        android:layout_marginTop="5dp"/>
+
+    <View
+        android:id="@+id/view_dialogpesq_v2"
+        android:layout_below="@+id/lv_dialogpesq_prod"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="#e0035c8c"/>
+
+    <TextView
+        android:id="@+id/tv_dialogpesq_tot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_dialogpesq_v2"
+        android:text="Total encontrado: 0"
+        android:gravity="right"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="13sp"/>
+
+    <Button
+        android:id="@+id/bt_dialogpesq_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fechar"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/view_dialogpesq_v2"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</RelativeLayout>

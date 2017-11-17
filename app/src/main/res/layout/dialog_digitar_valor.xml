@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Digite o valor que deseja pagar:"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimary"/>
+
+    <com.blackcat.currencyedittext.CurrencyEditText
+        android:id="@+id/moneyInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:allow_negative_values="false"/>
+
+    <TextView
+        android:id="@+id/valorRestante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valor restante: R$ 47.50"
+        android:textSize="14dp"
+        android:textColor="@color/colorRed"
+        android:layout_marginTop="-6dp"
+        android:layout_marginStart="5dp"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/OK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="OK"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+        <Button
+            android:id="@+id/Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="Cancelar"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:gravity="right|center_vertical"
+            app:layout_constraintEnd_toStartOf="@id/OK"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

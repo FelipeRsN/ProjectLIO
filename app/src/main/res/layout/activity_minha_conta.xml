@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:text="Pré-Conta"
+        android:gravity="center"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/guideline1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/mesa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        android:text="Mesa: 2424"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/guideline2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mesa"
+        android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"/>
+
+    <TextView
+        android:id="@+id/guideline4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/subtotal"
+        android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/subtotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline3">
+
+        <TextView
+            android:id="@+id/valueSubTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="R$00,00"
+            android:textColor="@color/colorBlack"
+            android:layout_marginEnd="24dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Total dos produtos:"
+            android:textColor="@color/colorBlack"
+            android:layout_marginStart="16dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/valueTax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="R$00,00"
+            android:textColor="@color/colorBlack"
+            android:layout_marginEnd="24dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Taxa de serviço:"
+            android:textColor="@color/colorBlack"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/valueTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="45dp"
+            android:text="R$00,00"
+            android:textColor="@color/colorBlack"
+            android:layout_marginEnd="24dp"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Total:"
+            android:textColor="@color/colorBlack"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="45dp"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/guideline3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
+        android:text="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/pb_minhaconta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_minhaconta_aviso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"
+        android:text="Nenhum produto encontrado"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:weightSum="3">
+
+        <FrameLayout
+            android:id="@+id/voltar"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/voltar"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="Voltar"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/colorWhite"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/imprimir"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/preconta"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="Imprimir"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/colorWhite"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/pgto"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pgto"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="Pagamento"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/colorWhite"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MinhaContaActivity">
+
+    <RelativeLayout
+        android:id="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/tv_conta_comanda"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:text="Conta do cliente"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tv_conta_nmesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="MESA: 000001"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginBottom="1dp"/>
+
+        <ImageButton
+            android:id="@+id/ib_conta_return"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/arrow_left_48"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:id="@+id/preconta"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="Pré-conta"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:padding="8dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tb_main">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/rl_conta_tot"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <TableLayout
+                android:id="@+id/tl_conta"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="5">
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Produto"
+android:textColor="@color/colorWhite"
+android:textStyle="bold"
+android:textSize="16sp"
+android:gravity="center"
+android:layout_weight="3"
+android:layout_margin="2dp"
+android:background="@drawable/border_radius"/>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Qtd"
+
+android:textColor="@color/colorWhite"
+android:textStyle="bold"
+android:textSize="16sp"
+android:layout_weight="1"
+android:gravity="center"
+android:layout_margin="2dp"
+android:background="@drawable/border_radius"/>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Total"
+android:gravity="center"
+android:textColor="@color/colorWhite"
+android:textStyle="bold"
+android:layout_weight="1"
+android:textSize="16sp"
+android:layout_margin="2dp"
+android:background="@drawable/border_radius"/>
+
+    </TableRow>
+
+    </TableLayout>
+
+    </ScrollView>
+
+<RelativeLayout
+android:id="@+id/rl_conta_tot"
+android:layout_width="match_parent"
+android:layout_height="80dp"
+android:layout_alignParentBottom="true">
+
+<View
+    android:id="@+id/view_conta_1"
+    android:layout_width="match_parent"
+    android:layout_height="0.6dp"
+    android:background="@color/colorPrimary"
+    android:layout_alignParentTop="true"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Total dos produtos:"
+    android:textSize="16sp"
+    android:layout_marginLeft="20dp"
+    android:layout_above="@+id/tv_conta_tax"
+    android:textColor="@color/colorPrimary"/>
+
+<TextView
+    android:id="@+id/tv_conta_tprod"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:text="R$ 0,00"
+    android:textSize="16sp"
+    android:layout_marginRight="20dp"
+    android:layout_above="@+id/tv_conta_tax"
+    android:textColor="@color/colorPrimary"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Taxa de serviço:"
+    android:textSize="16sp"
+    android:layout_marginLeft="20dp"
+    android:layout_above="@+id/view_conta_1"
+    android:textColor="@color/colorPrimary"/>
+
+<TextView
+    android:id="@+id/tv_conta_tax"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:text="R$ 0,00"
+    android:textSize="16sp"
+    android:layout_marginRight="20dp"
+    android:layout_above="@+id/view_conta_1"
+    android:textColor="@color/colorPrimary"/>
+
+<View
+    android:id="@+id/view_conta_1"
+    android:layout_width="match_parent"
+    android:layout_height="0.6dp"
+    android:background="@color/colorPrimary"
+    android:layout_above="@+id/tv_conta_tot"
+    android:layout_marginBottom="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Total:"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="20dp"
+    android:layout_alignParentBottom="true"
+    android:textColor="@color/colorPrimaryDark"/>
+
+<TextView
+    android:id="@+id/tv_conta_tot"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:text="R$ 0,00"
+    android:textSize="20sp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="20dp"
+    android:textStyle="bold"
+    android:layout_alignParentBottom="true"
+    android:textColor="@color/colorPrimaryDark"/>
+
+</RelativeLayout>
+
+<ProgressBar
+android:id="@+id/pb_minhaconta"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_centerVertical="true"/>
+
+<TextView
+android:id="@+id/tv_minhaconta_aviso"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_centerHorizontal="true"
+android:layout_centerVertical="true"
+android:gravity="center"
+android:visibility="invisible"
+android:textSize="20sp"
+android:textColor="@color/colorPrimary"
+android:text="Nenhum produto encontrado"/>
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+-->

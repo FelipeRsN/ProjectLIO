@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="true"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="#50E0E0E0">
+
+        <TextView
+            android:id="@+id/tv_carrinho_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_carrinho_codigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00000000000013"
+            android:gravity="center"
+            android:layout_below="@id/tv_carrinho_nome"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_carrinho_qtd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quantidade: 1"
+            android:layout_below="@id/tv_carrinho_codigo"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_carrinho_aco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="-- sahsuhdasud"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_carrinho_qtd"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_carrinho_obs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Observação: hsaudshudiisad"
+            android:layout_below="@id/tv_carrinho_aco"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/bt_carrinho_del"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_carrinho_obs"
+            android:layout_marginTop="5dp"
+            android:gravity="center|center_vertical"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:drawableLeft="@drawable/delete"
+            android:text=" Remover do carrinho"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <View
+            android:id="@+id/view_carrinho_v1"
+            android:layout_above="@id/bt_carrinho_del"
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="-7dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#e0035c8c"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
