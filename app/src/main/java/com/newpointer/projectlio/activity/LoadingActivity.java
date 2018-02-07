@@ -41,9 +41,6 @@ import java.sql.Statement;
 import java.util.Calendar;
 import java.util.Properties;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class LoadingActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressBar prog;
@@ -270,40 +267,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
 
-
-
-
-
-        Retrofit retrofit = getRetrofitProprieties("https://smarketapi.azurewebsites.net/API/Login/");
-
     }
-
-    public static Retrofit getRetrofitProprieties(String urlDaTalita){
-        return new Retrofit.Builder()
-                .baseUrl(urlDaTalita)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void nextClicked(boolean comeFromDialog){
         if(!comeFromDialog && dbl.isConfigurated()){
