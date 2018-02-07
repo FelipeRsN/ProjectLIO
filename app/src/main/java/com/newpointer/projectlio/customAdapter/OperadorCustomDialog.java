@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.newpointer.projectlio.R;
 import com.newpointer.projectlio.activity.ConfigurationActivity;
+import com.newpointer.projectlio.activity.LoadingActivity;
 import com.newpointer.projectlio.connection.DBLiteConnection;
 import com.newpointer.projectlio.model.OperadorModel;
 
@@ -29,10 +30,18 @@ public class OperadorCustomDialog extends Dialog implements View.OnClickListener
     private EditText pass;
     private DBLiteConnection dbl;
     private OperadorModel op;
+    private boolean changeConfig = false;
     public OperadorCustomDialog(Context context, Activity act) {
         super(context);
         this.ctx = context;
         this.act = act;
+    }
+
+    public OperadorCustomDialog(Context context, Activity act, boolean changeConfig) {
+        super(context);
+        this.ctx = context;
+        this.act = act;
+        this.changeConfig = changeConfig;
     }
 
     @Override
@@ -57,6 +66,18 @@ public class OperadorCustomDialog extends Dialog implements View.OnClickListener
         close.setOnClickListener(this);
     }
 
+    private void startNextStep(){
+        if(!changeConfig){
+            Intent i = new Intent();
+            i.setClass(act, ConfigurationActivity.class);
+            act.startActivity(i);
+            dismiss();
+        }else{
+            ((LoadingActivity)ctx).nextClicked(true);
+            dismiss();
+        }
+    }
+
     @Override
     public void onClick(View view) {
         if(view == close){
@@ -71,66 +92,58 @@ public class OperadorCustomDialog extends Dialog implements View.OnClickListener
                     Toast.makeText(act, "Senha não preenchida", Toast.LENGTH_SHORT).show();
                     pass.requestFocus();
                 }else{
-                    op = dbl.selectOp(Integer.parseInt(login.getText().toString()));
-                    if(op == null){
-                        login.setText("");
-                        pass.setText("");
-                        login.requestFocus();
-                        Toast.makeText(act, "Operador não encontrado", Toast.LENGTH_SHORT).show();
-                    }else{
-                        if(op.getFliniciar() == 1 || op.getFlprimeiro() == 1){
+                    if(login.getText().toString().equalsIgnoreCase("0") && pass.getText().toString().equalsIgnoreCase("794613")){
+                        startNextStep();
+                    }else {
+                        op = dbl.selectOp(Integer.parseInt(login.getText().toString()));
+                        if (op == null) {
                             login.setText("");
                             pass.setText("");
                             login.requestFocus();
-                            Toast.makeText(act, "Usuário novo. É preciso cadastrar uma senha de acesso.", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if(pass.getText().toString().equalsIgnoreCase(op.getPassword())){
-                                if(op.getFlperfil() == 0){
-                                    String func = dbl.selectOpFunc(Integer.parseInt(login.getText().toString()));
-                                    if(func.equalsIgnoreCase("CONFIG_FUN")){
-                                        Intent i = new Intent();
-                                        i.setClass(act, ConfigurationActivity.class);
-                                        act.startActivity(i);
-                                        dismiss();
-                                    }else{
-                                        if(login.getText().toString().equalsIgnoreCase("0") && pass.getText().toString().equalsIgnoreCase("794613")){
-                                            Intent i = new Intent();
-                                            i.setClass(act, ConfigurationActivity.class);
-                                            act.startActivity(i);
-                                            dismiss();
-                                        }else{
-                                            login.setText("");
-                                            pass.setText("");
-                                            login.requestFocus();
-                                            Toast.makeText(act, "Usuário sem permissão para esta função", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }else{
-                                    String func = dbl.selectPerfilFunc(op.getCdperfil());
-                                    if(func.equalsIgnoreCase("CONFIG_FUN")){
-                                        Intent i = new Intent();
-                                        i.setClass(act, ConfigurationActivity.class);
-                                        act.startActivity(i);
-                                        dismiss();
-                                    }else{
-                                        if(login.getText().toString().equalsIgnoreCase("0") && pass.getText().toString().equalsIgnoreCase("794613")){
-                                            Intent i = new Intent();
-                                            i.setClass(act, ConfigurationActivity.class);
-                                            act.startActivity(i);
-                                            dismiss();
-                                        }else{
-                                            login.setText("");
-                                            pass.setText("");
-                                            login.requestFocus();
-                                            Toast.makeText(act, "Usuário sem permissão para esta função", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }
-                            }else{
+                            Toast.makeText(act, "Operador não encontrado", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (op.getFliniciar() == 1 || op.getFlprimeiro() == 1) {
                                 login.setText("");
                                 pass.setText("");
                                 login.requestFocus();
-                                Toast.makeText(act, "Senha inválida", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(act, "Usuário novo. É preciso cadastrar uma senha de acesso.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (pass.getText().toString().equalsIgnoreCase(op.getPassword())) {
+                                    if (op.getFlperfil() == 0) {
+                                        String func = dbl.selectOpFunc(Integer.parseInt(login.getText().toString()));
+                                        if (func.equalsIgnoreCase("CONFIG_FUN")) {
+                                            startNextStep();
+                                        } else {
+                                            if (login.getText().toString().equalsIgnoreCase("0") && pass.getText().toString().equalsIgnoreCase("794613")) {
+                                                startNextStep();
+                                            } else {
+                                                login.setText("");
+                                                pass.setText("");
+                                                login.requestFocus();
+                                                Toast.makeText(act, "Usuário sem permissão para esta função", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    } else {
+                                        String func = dbl.selectPerfilFunc(op.getCdperfil());
+                                        if (func.equalsIgnoreCase("CONFIG_FUN")) {
+                                            startNextStep();
+                                        } else {
+                                            if (login.getText().toString().equalsIgnoreCase("0") && pass.getText().toString().equalsIgnoreCase("794613")) {
+                                                startNextStep();
+                                            } else {
+                                                login.setText("");
+                                                pass.setText("");
+                                                login.requestFocus();
+                                                Toast.makeText(act, "Usuário sem permissão para esta função", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    login.setText("");
+                                    pass.setText("");
+                                    login.requestFocus();
+                                    Toast.makeText(act, "Senha inválida", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     }

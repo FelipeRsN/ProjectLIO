@@ -336,10 +336,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(i);
                     }
                 });
-                builder.setNegativeButton("Sair do app", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Configurações", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        configuration.callOnClick();
                     }
                 });
                 builder.setCancelable(false);

@@ -538,13 +538,15 @@ class DBLiteConnection private constructor(ctx: Context) {
     /////////////////////// PGTO  /////////////////////////
     ////// insert /////////
 
-    fun insertPgtoToDB(mesa: String, nsu: String, forma_pgto: Int, tipo: String, valor: String) {
+    fun insertPgtoToDB(mesa: String, nsu: String, forma_pgto: Int, tipo: String, valor: String, bin: String, operadora: String) {
         val values = ContentValues()
         values.put("mesa", mesa)
         values.put("nsu", nsu)
         values.put("forma_pgto", forma_pgto)
         values.put("tipo_pgto", tipo)
         values.put("valor", valor)
+        values.put("bin", bin)
+        values.put("operadora", operadora)
         db.insert("pgto", null, values)
     }
 
@@ -559,11 +561,11 @@ class DBLiteConnection private constructor(ctx: Context) {
     @SuppressLint("Recycle")
     fun getPgto(mesa: String): ArrayList<HistoricoPagamentoModel> {
         val pgto = ArrayList<HistoricoPagamentoModel>()
-        val columns = arrayOf("nsu", "forma_pgto", "tipo_pgto", "valor")
+        val columns = arrayOf("nsu", "forma_pgto", "tipo_pgto", "valor", "bin", "operadora")
         val cursor = db.query("pgto", columns, "mesa = '$mesa'", null, null, null, null)
         if (cursor.moveToFirst()) {
             do {
-                pgto.add(HistoricoPagamentoModel(cursor.getString(0),cursor.getString(2),cursor.getInt(1),cursor.getString(3)))
+                pgto.add(HistoricoPagamentoModel(cursor.getString(0),cursor.getString(2),cursor.getInt(1),cursor.getString(3), cursor.getString(4), cursor.getString(5)))
             } while (cursor.moveToNext())
         }
         return pgto

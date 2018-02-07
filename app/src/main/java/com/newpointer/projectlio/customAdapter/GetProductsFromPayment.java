@@ -96,7 +96,7 @@ public class GetProductsFromPayment extends AsyncTask<String,Object,Integer> {
     public void onPostExecute(Integer i) {
         if(i == 1){
             if(haveConta){
-                ((PagamentoActivity)context).setTotal(total + totalTaxa);
+                ((PagamentoActivity)context).setTotal(total + totalTaxa, totalTaxa);
             }else{
                 ((PagamentoActivity)context).noPaymentAvailable();
             }

@@ -24,12 +24,13 @@
             android:src="@drawable/new_neo_logo"/>
 
         <TextView
+            android:id="@+id/version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
-            android:text="V 1.0"
+            android:text="V 1.1"
             android:layout_margin="16dp"/>
 
         <TextView

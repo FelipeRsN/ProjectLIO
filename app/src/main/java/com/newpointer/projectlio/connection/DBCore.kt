@@ -12,7 +12,7 @@ class DBCore private constructor(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, 
     companion object {
         private var db: DBCore? = null
         private val DB_NAME = "PedidoNewPointer"
-        private val DB_VERSION = 2
+        private val DB_VERSION = 1
 
         fun getInstance(ctx: Context): DBCore {
             if (db == null) db = DBCore(ctx)
@@ -33,7 +33,7 @@ class DBCore private constructor(ctx: Context) : SQLiteOpenHelper(ctx, DB_NAME, 
         db.execSQL("create table current_op(cd_operador integer, nm_operador text)")
         db.execSQL("create table prod_associado(id_associado text, id_prod text)")
         //Novas tabelas
-        db.execSQL("create table pgto(mesa text, nsu text, forma_pgto integer, tipo_pgto text, valor text)")
+        db.execSQL("create table pgto(mesa text, nsu text, forma_pgto integer, tipo_pgto text, valor text, bin text, operadora text)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

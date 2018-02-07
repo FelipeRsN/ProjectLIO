@@ -18,12 +18,32 @@ public class HistoricoPagamentoModel {
     private String valor;
     private String tipoDePagamento;
     private String nsu;
+    private String bin;
+    private String operadora;
 
-    public HistoricoPagamentoModel(String nsu, String tipoDePagamento, int formaDePagamento, String valor) {
+    public HistoricoPagamentoModel(String nsu, String tipoDePagamento, int formaDePagamento, String valor, String bin, String operadora) {
         this.formaDePagamento = formaDePagamento;
         this.valor = valor;
         this.nsu = nsu;
         this.tipoDePagamento = tipoDePagamento;
+        this.operadora = operadora;
+        this.bin = bin;
+    }
+
+    public String getBin() {
+        return bin;
+    }
+
+    public void setBin(String bin) {
+        this.bin = bin;
+    }
+
+    public String getOperadora() {
+        return operadora;
+    }
+
+    public void setOperadora(String operadora) {
+        this.operadora = operadora;
     }
 
     public int getFormaDePagamento() {

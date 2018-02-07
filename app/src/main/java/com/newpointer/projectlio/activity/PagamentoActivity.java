@@ -2,8 +2,8 @@ package com.newpointer.projectlio.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
@@ -26,14 +26,18 @@ import com.newpointer.projectlio.connection.DBLiteConnection;
 import com.newpointer.projectlio.customAdapter.GetProductsFromPayment;
 import com.newpointer.projectlio.customAdapter.HistoricoPagamentoAdapter;
 import com.newpointer.projectlio.customAdapter.PergDocCustomDialog;
-import com.newpointer.projectlio.customAdapter.PergDocumentoCustomDialog;
 import com.newpointer.projectlio.customAdapter.PergValorCustomDialog;
 import com.newpointer.projectlio.model.HistoricoPagamentoModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,6 +95,9 @@ public class PagamentoActivity extends AppCompatActivity {
 
     private ProgressDialog pd;
     private int numberOfCalls = 0;
+
+    private double totalGeral = 0.0;
+    private double totalTaxa = 0.0;
 
     //SDK de pagamento
     private OrderManager orderManager;
@@ -151,13 +158,17 @@ public class PagamentoActivity extends AppCompatActivity {
             }
             restante.setText("Valor restante: R$ " + formatarFloat.format(valorRestante));
         }
+
+        if(round(valorRestante, 2) == 0.00){
+            openCFEDialog();
+        }
     }
 
     private void onClickFunctions(){
         cartao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PergValorCustomDialog pergValor = new PergValorCustomDialog(PagamentoActivity.this, PagamentoActivity.this, valorRestante, PergValorCustomDialog.MODE_CARTAO);
+                PergValorCustomDialog pergValor = new PergValorCustomDialog(PagamentoActivity.this, PagamentoActivity.this, round(valorRestante, 2), PergValorCustomDialog.MODE_CARTAO);
                 pergValor.setCancelable(false);
                 pergValor.setCanceledOnTouchOutside(false);
                 pergValor.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -168,7 +179,7 @@ public class PagamentoActivity extends AppCompatActivity {
         dinheiro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PergValorCustomDialog pergValor = new PergValorCustomDialog(PagamentoActivity.this, PagamentoActivity.this, valorRestante, PergValorCustomDialog.MODE_DINHEIRO);
+                PergValorCustomDialog pergValor = new PergValorCustomDialog(PagamentoActivity.this, PagamentoActivity.this, round(valorRestante, 2), PergValorCustomDialog.MODE_DINHEIRO);
                 pergValor.setCancelable(false);
                 pergValor.setCanceledOnTouchOutside(false);
                 pergValor.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -201,8 +212,8 @@ public class PagamentoActivity extends AppCompatActivity {
         Double tot = valor / 100.00;
         valorRestante -= round(tot, 2);
         restante.setText("Valor restante: R$ " + formatarFloat.format(valorRestante));
-        dbl.insertPgtoToDB(nummesa,"",HistoricoPagamentoAdapter.FORMA_PGTO_DINHEIRO,"", round(tot, 2)+"");
-        listaPagamentos.add(new HistoricoPagamentoModel("","", HistoricoPagamentoAdapter.FORMA_PGTO_DINHEIRO, round(tot, 2)+""));
+        dbl.insertPgtoToDB(nummesa,"",HistoricoPagamentoAdapter.FORMA_PGTO_DINHEIRO,"", round(tot, 2)+"", "", "");
+        listaPagamentos.add(new HistoricoPagamentoModel("","", HistoricoPagamentoAdapter.FORMA_PGTO_DINHEIRO, round(tot, 2)+"","",""));
         adapter.notifyDataSetChanged();
 
         if(round(valorRestante, 2) == 0.00){
@@ -240,8 +251,8 @@ public class PagamentoActivity extends AppCompatActivity {
                 Double tot = valor / 100.00;
                 valorRestante -= round(tot, 2);
                 restante.setText("Valor restante: R$ " + formatarFloat.format(valorRestante));
-                dbl.insertPgtoToDB(nummesa, order.getPayments().get(0).getCieloCode(), HistoricoPagamentoAdapter.FORMA_PGTO_CARTAO, order.getPayments().get(0).getPaymentFields().get("primaryProductName"), round(tot, 2)+"");
-                listaPagamentos.add(new HistoricoPagamentoModel(order.getPayments().get(0).getCieloCode(), order.getPayments().get(0).getPaymentFields().get("primaryProductName"), HistoricoPagamentoAdapter.FORMA_PGTO_CARTAO, round(tot, 2)+""));
+                dbl.insertPgtoToDB(nummesa, order.getPayments().get(0).getCieloCode(), HistoricoPagamentoAdapter.FORMA_PGTO_CARTAO, order.getPayments().get(0).getPaymentFields().get("primaryProductName"), round(tot, 2)+"", order.getPayments().get(0).getPaymentFields().get("pan"), order.getPayments().get(0).getPaymentFields().get("cardLabelApplication"));
+                listaPagamentos.add(new HistoricoPagamentoModel(order.getPayments().get(0).getCieloCode(), order.getPayments().get(0).getPaymentFields().get("primaryProductName"), HistoricoPagamentoAdapter.FORMA_PGTO_CARTAO, round(tot, 2)+"", order.getPayments().get(0).getPaymentFields().get("pan"), order.getPayments().get(0).getPaymentFields().get("cardLabelApplication")));
                 adapter.notifyDataSetChanged();
 
                 if(round(valorRestante, 2) == 0.00){
@@ -333,43 +344,147 @@ public class PagamentoActivity extends AppCompatActivity {
 //        builder.show();
     }
 
-    public void concluirProcessamento(String documento, int mode){
-        //TODO ADICIONAR CHAMADA WS
+    public void concluirProcessamento(final String documento, int mode){
         pd.show();
-        new CountDownTimer(1000, 3000){
+        //final String pagamentos = "|DIN|0.01||||CREDITO|CRT|0.01|731895|8322|MasterCard|DEBITO|CRT|0.01|731896|4312|Debit|";
+        String pagamentos = "";
 
-            @Override
-            public void onTick(long l) {
-
+        for (HistoricoPagamentoModel listaPagamento : listaPagamentos) {
+            if(listaPagamento.getFormaDePagamento() == HistoricoPagamentoModel.FORMA_PGTO_MONEY){
+                //pagamentos = pagamentos +"Dinheiro - R$"+listaPagamento.getValor()+" | NSU: "+listaPagamento.getNsu()+"\n";
+                pagamentos = pagamentos+"|DIN|"+listaPagamento.getValor()+"|"+listaPagamento.getNsu()+"|"+listaPagamento.getBin().replace("*","")+"|"+listaPagamento.getOperadora()+"|";
+            }else{
+                //pagamentos = pagamentos +"Cartao("+listaPagamento.getTipoDePagamento()+") - R$"+listaPagamento.getValor()+" | NSU: "+listaPagamento.getNsu()+"\n";
+                pagamentos = pagamentos+""+listaPagamento.getTipoDePagamento()+"|CRT|"+listaPagamento.getValor()+"|"+listaPagamento.getNsu()+"|"+listaPagamento.getBin().replace("*","")+"|"+listaPagamento.getOperadora()+"|";
             }
+        }
 
-            @Override
-            public void onFinish() {
-                pd.dismiss();
+        Log.d("PAGAMENTO",pagamentos);
+
+        new FinalizaPagamento(pagamentos, documento).execute();
+//                pd.dismiss();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(PagamentoActivity.this, R.style.YourDialogStyle);
+//                builder.setTitle("Tudo certo");
+//                builder.setMessage("O pagamento deste(a) "+gerador.toLowerCase()+" foi finalizado com sucesso!");
+//                builder.setPositiveButton("FINALIZAR", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//
+//
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(PagamentoActivity.this, R.style.YourDialogStyle);
+//                        builder.setTitle("Debug de dados");
+//                        builder.setMessage(pagamentos);
+//                        builder.setPositiveButton("FINALIZAR", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dbl.resetPgtoTable();
+//                                finish();
+//                            }
+//                        });
+//                        builder.setCancelable(false);
+//                        builder.show();
+//                    }
+//                });
+//                builder.setCancelable(false);
+//                builder.show();
+    }
+
+    public class FinalizaPagamento extends AsyncTask<String, Object, Integer> {
+        String pagamentos;
+        String documento;
+        private boolean isError = false;
+        private String error = "";
+
+        FinalizaPagamento(String pagamentos, String documento){
+            this.pagamentos = pagamentos;
+            this.documento = documento;
+        }
+
+        @Override
+        protected Integer doInBackground(String... bt) {
+            try {
+                Class.forName("org.firebirdsql.jdbc.FBDriver");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+            try {
+                Properties props = new Properties();
+                props.setProperty("user", "POINTER");
+                props.setProperty("password", "sysadmin");
+                props.setProperty("encoding", "WIN1252");
+
+                Log.d("FECHACONTA", "PNM_ESTACAO: "+dbl.selectConfig().getEstacao());
+                Log.d("FECHACONTA ","PNR_GERADOR: "+nummesa+"");
+                Log.d("FECHACONTA ", "PFORMA_VL_PAGTO:"+ pagamentos);
+                Log.d("FECHACONTA ", "PTOTAL_GERAL: "+totalGeral+"");
+                Log.d("FECHACONTA ", "PVL_ACRESCIMO:"+ totalTaxa+"");
+                Log.d("FECHACONTA ", "PCPF_CLIENTE: "+documento);
+                Log.d("FECHACONTA ", "PCD_OPERADOR: "+dbl.selectCurrentOp().getId()+"");
+
+                Connection conn = DriverManager.getConnection("jdbc:firebirdsql://" + dbl.selectConfig().getString_bd() + "", props);
+                String sSql = "execute procedure FECHA_CONTA_ANDROID ('"+dbl.selectConfig().getEstacao()+"','"+nummesa+"','"+pagamentos+"'," +
+                        ""+totalGeral+","+totalTaxa+",'"+documento+"',"+dbl.selectCurrentOp().getId()+")";
+                Log.d("FECHACONTA ", "PROCEDURE: "+sSql);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sSql);
+                while (rs.next()){
+                   String result = rs.getString("RESULTADO");
+                    Log.d("FECHACONTA ", result);
+                    if(result.contains("OK")){
+                        isError = false;
+                    }else{
+                        isError = true;
+                        String[] erroSplit = result.split("\\|");
+                        if(erroSplit[1] != null){
+                            Log.d("FECHACONTA ", "ERRO: "+erroSplit[1]);
+                            error = erroSplit[1];
+                        }
+                    }
+                }
+                rs.close();
+                conn.close();
+                stmt.close();
+                return 1;
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                isError = true;
+                error = e1.toString();
+                return 0;
+            }
+        }
+
+        @Override
+        public void onPostExecute(Integer i) {
+            pd.dismiss();
+            if(isError){
+                Log.d("FECHACONTA", "TRUE: "+error);
                 AlertDialog.Builder builder = new AlertDialog.Builder(PagamentoActivity.this, R.style.YourDialogStyle);
-                builder.setTitle("Tudo certo");
-                builder.setMessage("O pagamento deste(a) "+gerador.toLowerCase()+" foi finalizado com sucesso!");
-                builder.setPositiveButton("FINALIZAR", new DialogInterface.OnClickListener() {
+                builder.setTitle("Erro ao processar pagamento");
+                builder.setMessage("Ocorreu um problema no processamento do pagamento, verifique o sinal do wi-fi e tente novamente.\n\nCaso o erro persista, entre em contato com o suporte.");
+                builder.setPositiveButton("TENTAR NOVAMENTE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        String pagamentos = "";
-
-                        for (HistoricoPagamentoModel listaPagamento : listaPagamentos) {
-                            if(listaPagamento.getFormaDePagamento() == HistoricoPagamentoModel.FORMA_PGTO_MONEY){
-                                pagamentos = pagamentos +"Dinheiro - R$"+listaPagamento.getValor()+" | NSU: "+listaPagamento.getNsu()+"\n";
-                            }else{
-                                pagamentos = pagamentos +"Cartao("+listaPagamento.getTipoDePagamento()+") - R$"+listaPagamento.getValor()+" | NSU: "+listaPagamento.getNsu()+"\n";
-                            }
-                        }
-
+                        pd.show();
+                        new FinalizaPagamento(pagamentos, documento).execute();
+                    }
+                });
+                builder.setNegativeButton("EXIBIR ERRO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(PagamentoActivity.this, R.style.YourDialogStyle);
-                        builder.setTitle("Debug de dados");
-                        builder.setMessage(pagamentos);
-                        builder.setPositiveButton("FINALIZAR", new DialogInterface.OnClickListener() {
+                        builder.setTitle("Descrição do erro");
+                        builder.setMessage(""+error);
+                        builder.setPositiveButton("TENTAR NOVAMENTE", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dbl.resetPgtoTable();
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                pd.show();
+                                new FinalizaPagamento(pagamentos, documento).execute();
+                            }
+                        });
+                        builder.setPositiveButton("SAIR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 finish();
                             }
                         });
@@ -379,15 +494,30 @@ public class PagamentoActivity extends AppCompatActivity {
                 });
                 builder.setCancelable(false);
                 builder.show();
+            }else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(PagamentoActivity.this, R.style.YourDialogStyle);
+                builder.setTitle("Tudo certo");
+                builder.setMessage("O pagamento deste(a) "+gerador.toLowerCase()+" foi finalizado com sucesso!");
+                builder.setPositiveButton("FINALIZAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dbl.resetPgtoTable();
+                        finish();
+                    }
+                });
+                builder.setCancelable(false);
+                builder.show();
             }
-        }.start();
+        }
     }
 
-    public void setTotal(Double totalGeral){
+    public void setTotal(Double totalGeral, Double totalTaxa){
         pb.setVisibility(View.GONE);
         group1.setVisibility(View.VISIBLE);
         aviso.setVisibility(View.GONE);
         valorRestante = totalGeral;
+        this.totalGeral = totalGeral;
+        this.totalTaxa = totalTaxa;
         subtotal.setText("Total a pagar: R$ " + formatarFloat.format(totalGeral));
         restante.setText("Valor restante: R$ " + formatarFloat.format(valorRestante));
 
