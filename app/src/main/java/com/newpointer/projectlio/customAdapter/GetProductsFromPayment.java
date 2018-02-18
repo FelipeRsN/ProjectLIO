@@ -48,19 +48,20 @@ public class GetProductsFromPayment extends AsyncTask<String,Object,Integer> {
             props.setProperty("encoding", "WIN1252");
             Connection conn = DriverManager.getConnection("jdbc:firebirdsql://"+dbl.selectConfig().getString_bd()+"", props);
             String sSql = "Select * from minha_conta_android('"+dbl.selectConfig().getTitulo_loja()+"','"+dbl.selectConfig().getEstacao()+"','"+mesa+"')";
+            Log.i("FECHACONTA",sSql);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sSql);
             while (rs.next()){
                 if(rs.getString("RETORNO").equalsIgnoreCase("OK")){
                     haveConta = true;
-                    Log.i("Retorno",rs.getString("RETORNO"));
-                    Log.i("CD_PRODUTO",rs.getString("CD_PRODUTO"));
-                    Log.i("DS_PRO",rs.getString("DS_PRO"));
-                    Log.i("QT_CONSUMO",rs.getString("QT_CONSUMO"));
-                    Log.i("VL_CONSUMO",rs.getString("VL_CONSUMO"));
-                    Log.i("TP_ESTACAO",rs.getString("TP_ESTACAO"));
-                    Log.i("VL_INDICE",rs.getString("VL_INDICE"));
-                    Log.i("UN_PRO",rs.getString("UN_PRO"));
+                    Log.i("FECHACONTA",rs.getString("RETORNO"));
+                    Log.i("FECHACONTA",rs.getString("CD_PRODUTO"));
+                    Log.i("FECHACONTA",rs.getString("DS_PRO"));
+                    Log.i("FECHACONTA",rs.getString("QT_CONSUMO"));
+                    Log.i("FECHACONTA",rs.getString("VL_CONSUMO"));
+                    Log.i("FECHACONTA",rs.getString("TP_ESTACAO"));
+                    Log.i("FECHACONTA",rs.getString("VL_INDICE"));
+                    Log.i("FECHACONTA",rs.getString("UN_PRO"));
                     Double val_prod = 0.0;
 
                     if(rs.getString("VL_CONSUMO") != null){

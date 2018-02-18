@@ -143,6 +143,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                         string_ip = "";
                         if(dbl.isConfigurated()){
                             string_ip = dbl.selectConfig().getString_bd().toString();
+                            if(string_ip.contains(" ")) string_ip = string_ip.replace(" ", "");
                             final TestaConn tc = new TestaConn();
                             tc.execute();
                             new CountDownTimer(15000, 1000){
@@ -300,6 +301,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                         prog.setProgress(progress);
                     }
                     string_ip = string_bd.getText().toString();
+                    if(string_ip.contains(" "))string_ip = string_ip.replace(" ", "");
                     haveConfiguratedNow = true;
                     nStringBD = string_bd.getText().toString();
                     nStringEst = estacao.getText().toString();
@@ -309,6 +311,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                     if (digito_verificador.isChecked()) nDigitoVerif = 1;
                     else nDigitoVerif = 0;
                     dbl.deleteConfig();
+                    if(nStringBD.contains(" ")) nStringBD = nStringBD.replace(" ", "");
                     dbl.insertConfig(nStringBD, nStringEst, nTaxa, nDigitoVerif, nPerguntaMesa, nTitle, nMin, nMax, "", selecModo, selecProd, 1, 0, selectedLio);
                     final TestaConn tc = new TestaConn();
                     tc.execute();
@@ -609,6 +612,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                         dbl.deleteConfig();
+                        if(nStringBD.contains(" ")) nStringBD = nStringBD.replace(" ", "");
                         dbl.insertConfig(nStringBD, nStringEst, nTaxa, nDigitoVerif, nPerguntaMesa, nTitle, nMin, nMax, date, selecModo, selecProd,preconta,conferencia, selectedLio);
 
                         if(dbl.haveProd() && dbl.haveFam()){
@@ -887,6 +891,7 @@ public class LoadingActivity extends AppCompatActivity implements View.OnClickLi
                         Calendar cld = Calendar.getInstance();
                         String date = cld.get(Calendar.DAY_OF_MONTH)+"/"+(cld.get(Calendar.MONTH)+1)+"/"+cld.get(Calendar.YEAR);
                         dbl.deleteConfig();
+                        if(config.getString_bd().contains(" ")) config.setString_bd(config.getString_bd().replace(" ", ""));
                         dbl.insertConfig(config.getString_bd(),config.getEstacao(),config.getTaxa(),config.getDigito_verificador(),config.getPergunta_mesa(),config.getTitulo_loja(),config.getNmin_mesa(),config.getNmax_mesa(),date,config.getPhone_selection(),config.getProduct_selection(),config.getPreconta(),config.getConferencia(), config.getLio());
                         status_system.setVisibility(View.INVISIBLE);
                         prog_circle.setVisibility(View.INVISIBLE);

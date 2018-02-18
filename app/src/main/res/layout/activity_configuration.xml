@@ -38,7 +38,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tb_main"
-        android:layout_above="@+id/bt_conf_atualizar">
+        android:layout_above="@+id/bt_conf_atualizar"
+        android:paddingTop="16dp"
+        android:paddingBottom="40dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:id="@+id/ll_conf_form"
@@ -271,6 +274,16 @@
                 android:text="Habilitar conferência de mesas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/limparDados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="#FFFFFF"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:text="Limpar dados de pagamento" />
 
         </LinearLayout>
 

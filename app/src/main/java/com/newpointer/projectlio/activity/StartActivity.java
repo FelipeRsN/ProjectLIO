@@ -1,10 +1,13 @@
 package com.newpointer.projectlio.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,6 +21,12 @@ import com.newpointer.projectlio.connection.DBLiteConnection;
 import com.newpointer.projectlio.customAdapter.OperadorCustomDialog;
 import com.newpointer.projectlio.customAdapter.PergMesaCustomDialog;
 import com.newpointer.projectlio.model.ConfigModel;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
 
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener{
@@ -42,6 +51,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private DBLiteConnection dbl;
     private ConfigModel config;
     private Intent i;
+    private ProgressDialog pd;
 
 
     @Override
@@ -53,6 +63,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         config = dbl.selectConfig();
         titulo.setText(config.getTitulo_loja());
+
+        pd = new ProgressDialog(StartActivity.this);
+        pd.setMessage("Processando informações abertas de pagamento...");
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
     }
 
     private void startVar(){
@@ -281,10 +296,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         }else{
                             comanda.setText("");
                             nmesa = "";
-                            i.setClass(StartActivity.this, PagamentoActivity.class);
-                            i.putExtra("numeroMesa",stringComanda);
-                            i.putExtra("gerador",dbl.selectConfig().getTitulo_loja());
-                            startActivity(i);
+                            //openPagamentoActivity(stringComanda);
+                            pd.show();
+                            new CheckIfPaymentIsOpen(stringComanda, dbl.selectConfig().getTitulo_loja(), true).execute();
                         }
                     }else{
                         String stringComanda = String.format("%6s", ncomanda).replace(' ', '0');
@@ -296,10 +310,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                             pmcd.setCanceledOnTouchOutside(false);
                             pmcd.show();
                         }else {
-                            i.setClass(StartActivity.this, PagamentoActivity.class);
-                            i.putExtra("numeroMesa",stringComanda);
-                            i.putExtra("gerador",dbl.selectConfig().getTitulo_loja());
-                            startActivity(i);
+                            //openPagamentoActivity(stringComanda);
+                            pd.show();
+                            new CheckIfPaymentIsOpen(stringComanda, dbl.selectConfig().getTitulo_loja(), true).execute();
                         }
                     }
                 }
@@ -316,6 +329,14 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void openPagamentoActivity(String comanda){
+        Intent i = new Intent();
+        i.setClass(StartActivity.this, PagamentoActivity.class);
+        i.putExtra("numeroMesa",comanda);
+        i.putExtra("gerador",dbl.selectConfig().getTitulo_loja());
+        startActivity(i);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -323,27 +344,229 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             if(dbl.havePaymentOpened()){
                 final String mesaPendente = dbl.getMesaWithPaymentOpened();
                 final String comandaPendente = config.getTitulo_loja();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.YourDialogStyle);
-                builder.setTitle("Pagamento em andamento");
-                builder.setMessage("Este dispositivo possui um pagamento em aberto na "+comandaPendente+" "+mesaPendente+".\n\nFinalize o pagamento ou contate a equipe de suporte para desbloquear o dispositivo");
-                builder.setPositiveButton("Continuar pagamento", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent();
-                        i.setClass(StartActivity.this, PagamentoActivity.class);
-                        i.putExtra("numeroMesa",mesaPendente);
-                        i.putExtra("gerador", comandaPendente);
-                        startActivity(i);
+
+                pd.show();
+                new CheckIfPaymentIsOpen(mesaPendente, comandaPendente, false).execute();
+            }
+        }
+    }
+
+    public class CheckIfPaymentIsOpen extends AsyncTask<String, Object, Integer> {
+        String mesa;
+        String comanda;
+        private boolean isError = false;
+        private String error = "";
+        private boolean openingPayment;
+
+        CheckIfPaymentIsOpen(String mesa, String comanda, boolean openingPayment){
+            this.mesa = mesa;
+            this.comanda = comanda;
+            this.openingPayment = openingPayment;
+        }
+
+        @Override
+        protected Integer doInBackground(String... bt) {
+            try {
+                Class.forName("org.firebirdsql.jdbc.FBDriver");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+            try {
+                Properties props = new Properties();
+                props.setProperty("user", "POINTER");
+                props.setProperty("password", "sysadmin");
+                props.setProperty("encoding", "WIN1252");
+
+                Log.d("FECHACONTA", "MESA: "+mesa);
+
+                Connection conn = DriverManager.getConnection("jdbc:firebirdsql://" + dbl.selectConfig().getString_bd() + "", props);
+                String sSql = "execute procedure VERIFICAR_CONTA_ABERTA_ANDROID ('"+mesa+"','"+dbl.selectConfig().getEstacao()+"')";
+                Log.d("FECHACONTA ", "PROCEDURE: "+sSql);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sSql);
+                while (rs.next()){
+                    String result = rs.getString("RESULTADO");
+                    Log.d("FECHACONTA ", result);
+                    if(result.contains("OK")){
+                        isError = false;
+                    }else{
+                        isError = true;
+                        String[] erroSplit = result.split("\\|");
+                        if(erroSplit[1] != null){
+                            Log.d("FECHACONTA ", "ERRO: "+erroSplit[1]);
+                            error = erroSplit[1];
+                        }
                     }
-                });
-                builder.setNegativeButton("Configurações", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        configuration.callOnClick();
+                }
+                rs.close();
+                conn.close();
+                stmt.close();
+                return 1;
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                isError = true;
+                error = e1.toString();
+                return 0;
+            }
+        }
+
+        @Override
+        public void onPostExecute(Integer i) {
+            if(!openingPayment) {
+                pd.dismiss();
+                if (isError) {
+                    Log.d("FECHACONTA", "TRUE: " + error);
+                    if (error.equalsIgnoreCase("CONTA EM USO POR OUTRA ESTACAO!")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this, R.style.YourDialogStyle);
+                        builder.setTitle("Erro ao continuar");
+                        builder.setMessage("Você iniciou um pagamento na " + comanda.toLowerCase() + " "+mesa+" e ele agora está em uso por outra estação.\n\nCaso ja tenha finalizado este pagamento em outra estação, entre em configurações e limpe os dados de pagamento.");
+                        builder.setPositiveButton("Tentar novamente", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                pd.show();
+                                new CheckIfPaymentIsOpen(mesa, comanda, false).execute();
+                            }
+                        });
+                        builder.setNegativeButton("Configurações", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                configuration.callOnClick();
+                            }
+                        });
+                        builder.setCancelable(false);
+                        builder.show();
+                    } else {
+                        Toast.makeText(StartActivity.this, "O pagamento da "+comanda+" "+mesa+" foi finalizado por outra estação.", Toast.LENGTH_SHORT).show();
+                        dbl.resetPgtoTable();
                     }
-                });
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this, R.style.YourDialogStyle);
+                    builder.setTitle("Pagamento em andamento");
+                    builder.setMessage("Este dispositivo possui um pagamento em aberto na " + comanda + " " + mesa + ".\n\nFinalize o pagamento ou acesse as configurações para limpar os dados de pagamento");
+                    builder.setPositiveButton("Continuar pagamento", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            openPagamentoActivity(mesa);
+                        }
+                    });
+                    builder.setNegativeButton("Configurações", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            configuration.callOnClick();
+                        }
+                    });
+                    builder.setCancelable(false);
+                    builder.show();
+                }
+            }else{
+                if (isError) {
+                    pd.dismiss();
+                    Log.d("FECHACONTA", "TRUE: " + error);
+                    if (error.equalsIgnoreCase("CONTA EM USO POR OUTRA ESTACAO!")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this, R.style.YourDialogStyle);
+                        builder.setTitle("Erro ao continuar");
+                        builder.setMessage("Essa " + comanda.toLowerCase() + " esta em uso por outra estação, aguarde a liberação da conta para finalizar o processo de pagamento e liberar esta estação\n\nCaso não deseje esperar, entre em configurações e limpe os dados de pagamento.");
+                        builder.setPositiveButton("Tentar novamente", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new CheckIfPaymentIsOpen(mesa, comanda, true).execute();
+                            }
+                        });
+                        builder.setNegativeButton("Configurações", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                configuration.callOnClick();
+                            }
+                        });
+                        builder.setCancelable(false);
+                        builder.show();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this, R.style.YourDialogStyle);
+                        builder.setTitle("Erro ao continuar");
+                        builder.setMessage("Essa " + comanda.toLowerCase() + " esta fechada.");
+                        builder.setPositiveButton("OK", null);
+                        builder.setCancelable(false);
+                        builder.show();
+                    }
+                } else {
+                    new OpenAndCloseAccount(mesa, comanda, "U").execute();
+                }
+            }
+        }
+
+    }
+
+    public class OpenAndCloseAccount extends AsyncTask<String, Object, Integer> {
+        String mesa;
+        String comanda;
+        String openClose;
+        private boolean isError = false;
+        private String error = "";
+
+        OpenAndCloseAccount(String mesa, String comanda, String openClose){
+            this.mesa = mesa;
+            this.comanda = comanda;
+            this.openClose = openClose;
+        }
+
+        @Override
+        protected Integer doInBackground(String... bt) {
+            try {
+                Class.forName("org.firebirdsql.jdbc.FBDriver");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+            try {
+                Properties props = new Properties();
+                props.setProperty("user", "POINTER");
+                props.setProperty("password", "sysadmin");
+                props.setProperty("encoding", "WIN1252");
+
+                Log.d("FECHACONTA", "MESA: "+mesa);
+
+                Connection conn = DriverManager.getConnection("jdbc:firebirdsql://" + dbl.selectConfig().getString_bd() + "", props);
+                String sSql = "execute procedure BLOQUEIA_LIBERA_CONTA_ANDROID  ('"+mesa+"','"+dbl.selectConfig().getEstacao()+"', '"+openClose+"')";
+                Log.d("FECHACONTA ", "PROCEDURE: "+sSql);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sSql);
+                while (rs.next()){
+                    String result = rs.getString("RESULTADO");
+                    Log.d("FECHACONTA ", result);
+                    if(result.contains("OK")){
+                        isError = false;
+                    }else{
+                        isError = true;
+                        String[] erroSplit = result.split("\\|");
+                        if(erroSplit[1] != null){
+                            Log.d("FECHACONTA ", "ERRO: "+erroSplit[1]);
+                            error = erroSplit[1];
+                        }
+                    }
+                }
+                rs.close();
+                conn.close();
+                stmt.close();
+                return 1;
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                isError = true;
+                error = e1.toString();
+                return 0;
+            }
+        }
+
+        @Override
+        public void onPostExecute(Integer i) {
+            pd.dismiss();
+            if(isError){
+                AlertDialog.Builder builder = new AlertDialog.Builder(StartActivity.this, R.style.YourDialogStyle);
+                builder.setTitle("Erro ao continuar");
+                builder.setMessage(error);
+                builder.setPositiveButton("OK", null);
                 builder.setCancelable(false);
                 builder.show();
+            }else{
+                openPagamentoActivity(mesa);
             }
         }
     }

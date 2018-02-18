@@ -548,9 +548,79 @@ public class PagamentoActivity extends AppCompatActivity {
         builder.show();
     }
 
+    public class OpenAndCloseAccount extends AsyncTask<String, Object, Integer> {
+        String mesa;
+        String comanda;
+        String openClose;
+        private boolean isError = false;
+        private String error = "";
+
+        OpenAndCloseAccount(String mesa, String comanda, String openClose){
+            this.mesa = mesa;
+            this.comanda = comanda;
+            this.openClose = openClose;
+        }
+
+        @Override
+        protected Integer doInBackground(String... bt) {
+            try {
+                Class.forName("org.firebirdsql.jdbc.FBDriver");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+            try {
+                Properties props = new Properties();
+                props.setProperty("user", "POINTER");
+                props.setProperty("password", "sysadmin");
+                props.setProperty("encoding", "WIN1252");
+
+                Log.d("FECHACONTA", "MESA: "+mesa);
+
+                Connection conn = DriverManager.getConnection("jdbc:firebirdsql://" + dbl.selectConfig().getString_bd() + "", props);
+                String sSql = "execute procedure BLOQUEIA_LIBERA_CONTA_ANDROID  ('"+mesa+"','"+dbl.selectConfig().getEstacao()+"', '"+openClose+"')";
+                Log.d("FECHACONTA ", "PROCEDURE: "+sSql);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sSql);
+                while (rs.next()){
+                    String result = rs.getString("RESULTADO");
+                    Log.d("FECHACONTA ", result);
+                    if(result.contains("OK")){
+                        isError = false;
+                    }else{
+                        isError = true;
+                        String[] erroSplit = result.split("\\|");
+                        if(erroSplit[1] != null){
+                            Log.d("FECHACONTA ", "ERRO: "+erroSplit[1]);
+                            error = erroSplit[1];
+                        }
+                    }
+                }
+                rs.close();
+                conn.close();
+                stmt.close();
+                return 1;
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                isError = true;
+                error = e1.toString();
+                return 0;
+            }
+        }
+
+        @Override
+        public void onPostExecute(Integer i) {
+
+        }
+    }
+
     @Override
     protected void onDestroy() {
         orderManager.unbind();
+        if(listaPagamentos.size() > 0){
+            Log.d("FECHACONTA","JA COMECOU PAGAMENTO");
+        }else{
+            new OpenAndCloseAccount(nummesa, gerador, "A").execute();
+        }
         super.onDestroy();
     }
 }

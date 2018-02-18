@@ -33,6 +33,7 @@ public class ConfigurationActivity extends AppCompatActivity implements View.OnC
     private Switch digito_verificador;
     private Switch pergunta_mesa;
     private Button atualizar;
+    private Button limparDados;
     private ImageButton ib_return;
     private DBLiteConnection dbl;
     private String bdconexao = "";
@@ -99,16 +100,21 @@ public class ConfigurationActivity extends AppCompatActivity implements View.OnC
         pergunta_mesa = (Switch) findViewById(R.id.sw_conf_mesa);
         conferencia = (Switch) findViewById(R.id.sw_conf_conferencia);
         atualizar = (Button) findViewById(R.id.bt_conf_atualizar);
+        limparDados = (Button) findViewById(R.id.limparDados);
         ib_return = (ImageButton) findViewById(R.id.ib_conf_return);
         busca = (Spinner) findViewById(R.id.sp_conf_prod);
         lioV1 = (TextView) findViewById(R.id.lioV1);
         lioV2 = (TextView) findViewById(R.id.lioV2);
         dbl = DBLiteConnection.Companion.getInstance(this);
 
+        if(dbl.havePaymentOpened()) limparDados.setVisibility(View.VISIBLE);
+        else limparDados.setVisibility(View.GONE);
+
         atualizar.setOnClickListener(this);
         ib_return.setOnClickListener(this);
         lioV1.setOnClickListener(this);
         lioV2.setOnClickListener(this);
+        limparDados.setOnClickListener(this);
     }
 
     private void enableLioV1(){
@@ -215,6 +221,22 @@ public class ConfigurationActivity extends AppCompatActivity implements View.OnC
         }
         if(v == lioV2){
             enableLioV2();
+        }
+        if(v == limparDados){
+            AlertDialog.Builder builder = new AlertDialog.Builder(ConfigurationActivity.this, R.style.YourDialogStyle);
+            builder.setTitle("Limpar dados de pagamento");
+            builder.setMessage("Tem certeza que deseja apagar os dados de pagamentos em aberto na comanda "+dbl.getMesaWithPaymentOpened()+"?\n\nEsses dados não poderão ser reculperados");
+            builder.setPositiveButton("LIMPAR", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbl.resetPgtoTable();
+                    Toast.makeText(ConfigurationActivity.this, "Dados de pagamento apagados com sucesso!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("SAIR", null);
+            builder.setCancelable(false);
+            builder.show();
+
         }
     }
 }
