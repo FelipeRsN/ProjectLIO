@@ -63,7 +63,7 @@ public class PergValorCustomDialog extends Dialog implements View.OnClickListene
         valorRestante = (TextView) findViewById(R.id.valorRestante);
         valorDigitado = (CurrencyEditText) findViewById(R.id.moneyInput);
 
-        long value = (long) (valorTotal * 100);
+        long value = (long) (PagamentoActivity.round(valorTotal, 2) * 100);
 
        valorDigitado.setValue(value);
 
@@ -74,7 +74,7 @@ public class PergValorCustomDialog extends Dialog implements View.OnClickListene
         }
 
         DecimalFormat formatarFloat = new DecimalFormat("0.00");
-        valorRestante.setText("Valor restante: R$ "+formatarFloat.format(valorTotal));
+        valorRestante.setText("Valor restante: R$ "+formatarFloat.format(PagamentoActivity.round(valorTotal, 2)));
 
         valorDigitado.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -93,8 +93,8 @@ public class PergValorCustomDialog extends Dialog implements View.OnClickListene
     @Override
     public void onClick(View view) {
         if(view == ok){
-            if(valorDigitado.getRawValue() > 0) {
-                if ((valorDigitado.getRawValue() / 100.00) > valorTotal) {
+            if(PagamentoActivity.round(valorDigitado.getRawValue(), 2) > 0) {
+                if ((PagamentoActivity.round(valorDigitado.getRawValue(), 2) / 100.00) > PagamentoActivity.round(valorTotal, 2)) {
                     Toast.makeText(act, "Valor digitado maior que o valor total restante.", Toast.LENGTH_SHORT).show();
                 } else {
                     if (mode == MODE_DINHEIRO) {

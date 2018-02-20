@@ -2,6 +2,7 @@ package com.newpointer.projectlio.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -502,7 +503,10 @@ public class PagamentoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dbl.resetPgtoTable();
-                        finish();
+                        Intent i = new Intent();
+                        i.setClass(PagamentoActivity.this, StartActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
                     }
                 });
                 builder.setCancelable(false);
@@ -515,9 +519,9 @@ public class PagamentoActivity extends AppCompatActivity {
         pb.setVisibility(View.GONE);
         group1.setVisibility(View.VISIBLE);
         aviso.setVisibility(View.GONE);
-        valorRestante = totalGeral;
-        this.totalGeral = totalGeral;
-        this.totalTaxa = totalTaxa;
+        valorRestante = round(totalGeral,2);
+        this.totalGeral = round(totalGeral, 2);
+        this.totalTaxa = round(totalTaxa, 2);
         subtotal.setText("Total a pagar: R$ " + formatarFloat.format(totalGeral));
         restante.setText("Valor restante: R$ " + formatarFloat.format(valorRestante));
 
